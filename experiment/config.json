@@ -1,0 +1,13 @@
+{
+  "filepath": {"train": "dataset/train_data.pkl",
+              "val": "dataset/val_data.pkl",
+              "test": "dataset/test_data.pkl",
+              "token_vocab": "dataset/token_vocab.pkl",
+              "label_vocab": "dataset/label_vocab.pkl",
+              "ckpt": "model_save.pth"},
+  "training": {"num_classes" : 2,
+              "epochs" : 2,
+              "batch_size" : 64,
+              "learning_rate" : 1e-3,
+              "summary_step" : 10000}
+}
