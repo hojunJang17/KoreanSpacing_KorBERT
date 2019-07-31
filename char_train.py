@@ -58,8 +58,10 @@ summary_step = params['training'].get('summary_step')
 
 
 # creating dataset, dataloader
-train_path = params['filepath'].get('train')
-val_path = params['filepath'].get('val')
+# train_path = params['filepath'].get('train')
+# val_path = params['filepath'].get('val')
+train_path = 'dataset/new_train.pkl'
+val_path = 'dataset/new_val.pkl'
 train_data = Corpus(train_path, token_vocab.to_indices, label_vocab.to_indices)
 train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=False, num_workers=16,
                           drop_last=True, collate_fn=batchify)
@@ -75,7 +77,7 @@ opt = optim.Adam([
 ])
 
 # using gpu
-device = torch.device('cuda:2') if torch.cuda.is_available() else torch.device('cpu')
+device = torch.device('cuda:1') if torch.cuda.is_available() else torch.device('cpu')
 model.to(device)
 
 
@@ -86,18 +88,18 @@ for epoch in tqdm(range(epochs), desc='epochs'):
     for step, mb in tqdm(enumerate(train_loader), desc='train_steps', total=len(train_loader)):
         x_mb, y_mb, _ = map(lambda elm: elm.to(device), mb)
         opt.zero_grad()
-
         mb_loss = model(x_mb, labels=y_mb)
+
         mb_loss.backward()
         opt.step()
 
         tr_loss += mb_loss.item()
-
-        # if (epoch * len(train_loader) + step) % summary_step == 0:
-        #     val_loss = evaluate(model, val_loader, device)
-        #     model.train()
         x_mb.cpu()
         y_mb.cpu()
+        if (epoch * len(train_loader) + step) % summary_step == 0:
+            val_loss = evaluate(model, val_loader, device)
+            model.train()
+
     else:
         tr_loss /= (step+1)
 
@@ -107,5 +109,6 @@ for epoch in tqdm(range(epochs), desc='epochs'):
 
 ckpt = {'model_state_dict': model.state_dict(),
         'opt_state_dict': opt.state_dict()}
-save_path = params['filepath'].get('ckpt')
+# save_path = params['filepath'].get('ckpt')
+save_path = 'tokenize.pth'
 torch.save(ckpt, save_path)

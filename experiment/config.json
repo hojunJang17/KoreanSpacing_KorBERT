@@ -7,7 +7,7 @@
               "ckpt": "model_save.pth"},
   "training": {"num_classes" : 2,
               "epochs" : 2,
-              "batch_size" : 64,
+              "batch_size" : 8,
               "learning_rate" : 1e-3,
               "summary_step" : 10000}
 }

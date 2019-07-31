@@ -1,9 +1,31 @@
 import json
 import pickle
+import re
 from tqdm import tqdm
 from glob import glob
 from bert.tokenization import BertTokenizer
 from sklearn.model_selection import train_test_split
+
+
+def get_label(s, idx=0):
+    # labeling data
+
+    label = []
+    while True:
+        try:
+            next_ch = s[idx+1]
+        except:
+            label.append('<non_split>')
+            break
+        if next_ch == ' ':
+            label.append('<split>')
+            while s[idx+1] == ' ':
+                idx += 1
+            idx += 1
+        else:
+            label.append('<non_split>')
+            idx += 1
+    return label
 
 with open('experiment/config.json') as f:
     params = json.loads(f.read())
@@ -12,7 +34,6 @@ filenames = glob('sentences/*.txt')
 ptr_tokenizer = BertTokenizer.from_pretrained('bert/vocab.korean.rawtext.list', do_lower_case=False)
 
 data = []
-
 for p in tqdm(filenames):
     with open(p, 'r', encoding='utf-8') as f:
         a = f.readlines()

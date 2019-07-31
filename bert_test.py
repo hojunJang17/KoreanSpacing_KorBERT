@@ -1,6 +1,7 @@
 import json
 import torch
 import pickle
+import re
 from model.net import BertTagger
 from bert.tokenization import BertTokenizer
 from pytorch_pretrained_bert.modeling import BertConfig
@@ -45,8 +46,7 @@ while True:
         print('exit')
         break
     a = ptr_tokenizer.tokenize(original_text.replace(' ', ''))
-    print(a)
-    b = torch.tensor(token_vocab.to_indices(a))
+    b = torch.tensor(token_vocab.to_indices(a), dtype=torch.int64)
     b = b.view(1, -1)
     with torch.no_grad():
         yhat = model(b).max(2)[1].numpy().tolist()

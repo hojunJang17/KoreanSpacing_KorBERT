@@ -19,6 +19,12 @@ Need to run train to save trained model.
 
 ## Result
 
-* Train_f1_score = 98.64%
-* Val_f1_score = 98.37%
-* Test_f1_score = 98.39%
+* With BERT Tokenizer
+    * Train_f1_score = 98.64%
+    * Val_f1_score = 98.37%
+    * Test_f1_score = 98.39%
+
+* With Character-level Tokenizer
+    * Train_f1_score = 98.78%
+    * Val_f1_score = 98.78%
+    * Test_f1_score = 98.79%
